@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Dashboard</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="google-signin-client_id" content="19762856856-fe2k0006r43i45r9kqg73gjl5abn2ien.apps.googleusercontent.com">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="../dashboard_files/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/css/util.css">
+	<link rel="stylesheet" type="text/css" href="../dashboard_files/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body onLoad="refresh()"";>
+
+        <div class="limiter">
+			<div style="border-bottom: 1px solid #adadad; height: 50px; background-color: #9478ff;">
+				<ul>
+					<li style="float: left; margin-left: 1%; margin-top: 12px; color: white;">Dashboard</li>
+					<li style="float: right; margin-right: 1%; margin-top: 12px; color: white;">
+						<form action="/logout" method="GET">
+							<button style="color: white;" type="submit">Logout</button>
+						</form>
+					</li>
+					<li id="widget_button" onclick="change_display('service')" style="cursor: pointer; display: block; float: right; margin-right: 10px; padding-right: 10px; margin-top: 12px; color: white; border-right: 1px solid #adadad">Connexion services</li>					
+					<li id="service_button" onclick="change_display('widget')" style="cursor: pointer; display: none; float: right; margin-right: 10px; padding-right: 10px; margin-top: 12px; color: white; border-right: 1px solid #adadad">View widgets</li>
+				</ul>
+			</div>
+			<div id="widget_display" style="display: wrap;" class="container-login100">
+				<div id="add_widget_before"></div>
+				<!--Modal: settingsWidget-->
+				<div class="modal fade right" id="modalSettings" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+				<div class="modal-dialog modal-side modal-bottom-right modal-notify modal-info" role="document">
+				<!--Content-->
+				<div class="modal-content" style="margin-top: 20%;">
+					<!--Header-->
+					<div class="modal-header">
+					<p class="heading">Setting Widget</p>
+
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="close_all_modal()">
+						<span aria-hidden="true" class="white-text">&times;</span>
+					</button>
+					</div>
+
+					<!--Body-->
+					<!-- Add Services Money -->
+					<p style="display: none;" id="old_widget_id"></p>
+					<div id="money_widget" class="modal-body" style="display:none;border-bottom: 1px solid #e9ecef;">
+						<p>Money</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-6" style="margin-bottom: 15px;">
+								<p style="margin-bottom: 5px;">Currency source :</p>
+								<select name="currency_src" id="new_currencySrc">
+									<option value="AUD">Australian Dollar</option>
+									<option value="GBP">Pound Sterling</option>
+									<option value="CHF">Swiss Franc</option>
+									<option value="RUB">Russian Rouble</option>
+									<option value="CAD">Canadian Dollar</option>
+									<option value="EUR">Euro</option>
+									<option value="USD">US Dollar</option>
+								</select>
+							</div>
+							<div class="col-6" style="margin-bottom: 15px;">
+								<p style="margin-bottom: 5px;">Currency destination :</p>
+								<select name="currency_dest" id="new_currencyDest">
+									<option value="AUD">Australian Dollar</option>
+									<option value="GBP">Pound Sterling</option>
+									<option value="CHF">Swiss Franc</option>
+									<option value="RUB">Russian Rouble</option>
+									<option value="CAD">Canadian Dollar</option>
+									<option value="EUR">Euro</option>
+									<option value="USD">US Dollar</option>
+								</select>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('converter')" data-dismiss="modal">Edit converter widget</button>
+					</div>
+					<div id="weather_widget" class="modal-body" style="display:none;border-bottom: 1px solid #e9ecef;">
+						<p>Weather</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>City :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="text" id="new_city_name" value="Lyon">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('weather_city')" data-dismiss="modal">Edit weather city widget</button>
+					</div>
+					<div id="spotify_widget" class="modal-body" style="display:none;border-bottom: 1px solid #e9ecef;">
+						<p>Spotify</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of playlists :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="new_number_playlist" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('spotify_playlist')" data-dismiss="modal">Edit spotify playlist</button>
+					</div>
+					<div id="facebook_widget" class="modal-body" style="display:none;border-bottom: 1px solid #e9ecef;">
+						<p>Facebook</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of events :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="new_number_event" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('facebook_event')" data-dismiss="modal">Edit facebook friends</button>
+					</div>
+					<div id="google_widget" class="modal-body" style="display:none;border-bottom: 1px solid #e9ecef;">
+						<p>Google</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of Mails :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="new_google_input" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('google_widget')" data-dismiss="modal">Edit Mails lists</button>
+					</div>
+					<div id="github_widget" class="modal-body" style="display:none;">
+						<p>Github</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Name account github :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="text" id="new_github_project_id" value="theobeaulieu">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('github_project')" data-dismiss="modal">Edit github project</button>
+					</div>
+					<div id="outlook_widget" class="modal-body" style="display:none;">
+						<p>Outlook Events</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of Events :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="new_outlook_input" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('outlook_widget')" data-dismiss="modal">Edit Outlook Event</button>
+					</div>
+					<div id="outlook_mails_widget" class="modal-body" style="display:none;">
+						<p>Outlook Mails</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of Mails :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="new_outlook_mails_input" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="new_setting_widget('outlook_mails_widget')" data-dismiss="modal">Edit Outlook Mails</button>
+					</div>
+					<!-- End of add Services Money -->
+				</div>
+				<!--/.Content-->
+				</div>
+				</div>
+				<!--End of modal: SettingsWidget-->
+				<!--Modal: modalWidget-->
+				<div class="modal fade right" id="modalWidget" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+				<div class="modal-dialog modal-side modal-bottom-right modal-notify modal-info" role="document">
+				<!--Content-->
+				<div class="modal-content" style="margin-top: 20%;">
+					<!--Header-->
+					<div class="modal-header">
+					<p class="heading">Add Widgets</p>
+
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true" class="white-text">&times;</span>
+					</button>
+					</div>
+
+					<!--Body-->
+					<!-- Add Services Money -->
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Money</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-6" style="margin-bottom: 15px;">
+								<p style="margin-bottom: 5px;">Currency source :</p>
+								<select name="currency_src" id="currencySrc">
+									<option value="AUD">Australian Dollar</option>
+									<option value="GBP">Pound Sterling</option>
+									<option value="CHF">Swiss Franc</option>
+									<option value="RUB">Russian Rouble</option>
+									<option value="CAD">Canadian Dollar</option>
+									<option value="EUR">Euro</option>
+									<option value="USD">US Dollar</option>
+								</select>
+							</div>
+							<div class="col-6" style="margin-bottom: 15px;">
+								<p style="margin-bottom: 5px;">Currency destination :</p>
+								<select name="currency_dest" id="currencyDest">
+									<option value="AUD">Australian Dollar</option>
+									<option value="GBP">Pound Sterling</option>
+									<option value="CHF">Swiss Franc</option>
+									<option value="RUB">Russian Rouble</option>
+									<option value="CAD">Canadian Dollar</option>
+									<option value="EUR">Euro</option>
+									<option value="USD">US Dollar</option>
+								</select>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('converter')" data-dismiss="modal">Add converter widget</button>
+					</div>
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Weather</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>City :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="text" id="city_name" value="Lyon">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('weather_city')" data-dismiss="modal">Add weather city widget</button>
+					</div>
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Spotify</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of playlists :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="number_playlist" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('spotify_playlist')" data-dismiss="modal">Add spotify playlist</button>
+					</div>
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Facebook</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of events :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="number_event" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('facebook_event')" data-dismiss="modal">Add facebook friends</button>
+					</div>
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Google</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of Mails :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="google_input" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('google_widget')" data-dismiss="modal">Add Mails list</button>
+					</div>
+					<div class="modal-body">
+						<p>Github</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Name account github :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="text" id="github_project_id" value="theobeaulieu">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('github_project')" data-dismiss="modal">Add github project</button>
+					</div>
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Outlook Events</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of events :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="number_events" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('outlook_events')" data-dismiss="modal">Add Outlook events</button>
+					</div>
+					<div class="modal-body" style="border-bottom: 1px solid #e9ecef;">
+						<p>Outlook Mails</p>
+						<div class="row" style="margin-left: 15px;">
+							<div class="col-12" style="max-width: 92%;">
+								<p>Number of mails :</p>
+								<div class="wrap-input100 validate-input" style="margin-bottom: 20px;">
+									<input class="input100" type="number" id="number_mails" value="1">
+								</div>
+							</div>
+						</div>
+						<button class="btn button-add-widget-color btn-md" onclick="add_widget('outlook_mails')" data-dismiss="modal">Add Outlook mails</button>
+					</div>
+					<!-- End of add Services Money -->
+				</div>
+				<!--/.Content-->
+				</div>
+				</div>
+				<!--Modal: modalWidget-->
+			</div>
+			<div id="service_display" style="display: none;" class="container-login100">
+				<div class="wrap-login100 margin-container">
+					<p style="margin-bottom: 20px;">Connect to Google</p>
+					<p id="token_google" style="display: none;"></p>
+					<img src="../dashboard_files/images/icons/google.png" style="cursor: pointer; height: 100px; width: 100px; margin-left: 31%;">
+					<form action="/google/login_google" method="GET">
+						<div class="container-login100-form-btn">
+							<div class="wrap-login100-form-btn">
+								<div class="login100-form-bgbtn"></div>
+								<button class="login100-form-btn" type="submit" class="button">
+									Connect
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="wrap-login100 margin-container">
+					<p style="margin-bottom: 20px;">Connect to Outlook</p>
+					<p id="token_outlook" style="display: none;"></p>
+					<img src="../dashboard_files/images/icons/outlook.png" style="height: 100px; width: 100px; margin-left: 28%;">
+					<form action="/outlook/login_outlook" method="GET">
+						<div class="container-login100-form-btn">
+							<div class="wrap-login100-form-btn">
+								<div class="login100-form-bgbtn"></div>
+								<button class="login100-form-btn" type="submit" class="button">
+									Connect
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="wrap-login100 margin-container">
+					<p style="margin-bottom: 20px;">Connect to Facebook</p>
+					<p id="token_facebook" style="display: none;"></p>
+					<img src="../dashboard_files/images/icons/facebook.png" style="height: 100px; width: 100px; margin-left: 34%;">
+					<form action="/facebook/login/facebook" method="GET">
+						<div class="container-login100-form-btn">
+							<div class="wrap-login100-form-btn">
+								<div class="login100-form-bgbtn"></div>
+								<button class="login100-form-btn" type="submit" class="button">
+									Connect
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="wrap-login100 margin-container">
+					<p style="margin-bottom: 20px;">Connect to Spotify</p>
+					<p id="token_spotify" style="display: none;"></p>
+					<img src="../dashboard_files/images/icons/spotify.png" style="height: 100px; width: 100px; margin-left: 34%;">
+					<form action="/spotify/login_spotify" method="GET">
+						<div class="container-login100-form-btn">
+							<div class="wrap-login100-form-btn">
+								<div class="login100-form-bgbtn"></div>
+								<button class="login100-form-btn" type="submit" class="button">
+									Connect
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="wrap-login100 margin-container">
+					<p style="margin-bottom: 20px;">Connect to Github</p>
+					<p id="token_github" style="display: none;"></p>
+					<img src="../dashboard_files/images/icons/github.svg" style="height: 100px; width: 100px; margin-left: 34%;">
+					<form action="/github/login_github" method="GET">
+						<div class="container-login100-form-btn">
+							<div class="wrap-login100-form-btn">
+								<div class="login100-form-bgbtn"></div>
+								<button class="login100-form-btn" type="submit" class="button">
+									Connect
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<button id="button_add_widget" class="button-circle" data-toggle="modal" data-target="#modalWidget"> + </button>
+		</div>
+    	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="../dashboard_files/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../dashboard_files/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../dashboard_files/vendor/bootstrap/js/popper.js"></script>
+	<script src="../dashboard_files/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../dashboard_files/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../dashboard_files/vendor/daterangepicker/moment.min.js"></script>
+	<script src="../dashboard_files/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="../dashboard_files/vendor/countdowntime/countdowntime.js"></script>
+	<script src="https://kit.fontawesome.com/7e08f0b530.js" crossorigin="anonymous"></script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+<!--===============================================================================================-->
+	<script src="../dashboard_files/js/main.js"></script>
+	<script src="../Services/Converter.js"></script>
+	<script src="../Services/Create_widget.js"></script>
+	<script src="../Services/Weather.js"></script>
+	<script src="../Services/Delete_widget.js"></script>
+	<script src="../Services/Display.js"></script>
+	<script src="../Services/Facebook.js"></script>
+	<script src="../Services/Google.js"></script>
+	<script src="../Services/Outlook.js"></script>
+	<script src="../Services/Spotify.js"></script>
+	<script src="../Services/Github.js"></script>
+	<script src="../Services/Settings_widget.js"></script>
+	<script src="../Services/Refresh.js"></script>
+
+</body>
+</html>

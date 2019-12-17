@@ -1,0 +1,89 @@
+{
+    "customer": {
+        "host": "127.0.0.1"
+    },
+    "server": {
+        "current_time": 1531680780,
+        "services": [{
+            "name": "weather",
+            "widgets": [{
+                "name": "city_temperature",
+                "description": "Display temperature for a city",
+                "params": [{
+                    "name": "city",
+                    "type": "string"
+                }]
+            }]
+        }, {
+            "name": "Money",
+            "widgets": [{
+                "name": "converter_currency",
+                "description": "Convert a currency into another currency",
+                "params": [{
+                    "name": "currency_src",
+                    "type": "string"
+                }, {
+                    "name": "currency_dest",
+                    "type": "string"
+                }]
+            }]
+        }, {
+            "name": "Facebook",
+            "widgets": [{
+                "name": "facebook_events",
+                "description": "Displays the user's facebook events list",
+                "params": [{
+                    "name": "number_of_events",
+                    "type": "integer"
+                }]
+            }]
+        }, {
+            "name": "Github",
+            "widgets": [{
+                "name": "github_repositories",
+                "description": "Displays the user's github repositories list",
+                "params": [{
+                    "name": "account_name",
+                    "type": "string"
+                }]
+            }]
+        }, {
+            "name": "Google",
+            "widgets": [{
+                "name": "google_mails",
+                "description": "Displays the user's google mails list",
+                "params": [{
+                    "name": "number_of_mails",
+                    "type": "integer"
+                }]
+            }]
+        }, {
+            "name": "Spotify",
+            "widgets": [{
+                "name": "spotify_playlist",
+                "description": "Displays the user's spotify playlist",
+                "params": [{
+                    "name": "number_of_playlist",
+                    "type": "integer"
+                }]
+            }]
+        }, {
+            "name": "Outlook",
+            "widgets": [{
+                "name": "outlook_events",
+                "description": "Displays the user's outlook events list",
+                "params": [{
+                    "name": "number_of_event",
+                    "type": "integer"
+                }]
+            }, {
+                "name": "outlook_mails",
+                "description": "Displays the user's outlook mails list",
+                "params": [{
+                    "name": "number_of_mails",
+                    "type": "integer"
+                }]
+            }]
+        }]
+    }
+}
